@@ -16,27 +16,55 @@ const XHTMLFormTransformer = () => {
   const editableSetupDone = useRef(new Set());
 
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.lang = 'en-US';
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current.lang = 'en-US';
+    recognitionRef.current.continuous = true;
+    recognitionRef.current.interimResults = false;
 
-      recognitionRef.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        if (currentEditableRef.current) {
-          currentEditableRef.current.textContent = transcript;
+    recognitionRef.current.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript.trim();
+      if (!currentEditableRef.current) return;
+      const target = currentEditableRef.current;
+
+      // 🔹 Call AI agent for interpretation
+      const result = await aiVoiceAgent(transcript);
+
+      console.log("AI result:", result);
+
+      // 🔹 Apply AI action
+      if (result && result.confidence > 0.5) {
+        switch (result.action) {
+          case "replace":
+            target.textContent = result.value;
+            break;
+          case "append":
+            target.textContent = (target.textContent + " " + result.value).trim();
+            break;
+          case "clear":
+            target.textContent = "";
+            break;
+          default:
+            // noop or unknown
+            break;
         }
-      };
 
-      recognitionRef.current.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-      };
+        // visual feedback
+        target.style.backgroundColor = "#e9ffe9";
+        setTimeout(() => {
+          target.style.backgroundColor = "";
+        }, 800);
+      }
+    };
 
-      setIsVoiceReady(true);
-    }
-  }, []);
+    recognitionRef.current.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+    };
+
+    setIsVoiceReady(true);
+  }
+}, []);
 
   const shouldMakeEditable = (element) => {
     const text = element.textContent || '';
