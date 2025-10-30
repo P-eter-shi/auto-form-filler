@@ -15,6 +15,24 @@ const XHTMLFormTransformer = () => {
   const currentEditableRef = useRef(null);
   const editableSetupDone = useRef(new Set());
 
+   // 🧠 Connects to backend /api/voice-agent
+  const aiVoiceAgent = async (transcript) => {
+    try {
+      const res = await fetch("http://localhost:3001/api/voice-agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript }),
+      });
+
+      const data = await res.json();
+      console.log("🤖 AI response:", data);
+      return data;
+    } catch (err) {
+      console.error("AI request failed:", err);
+      return { action: "replace", value: transcript, confidence: 0.5, type: "text" };
+    }
+  };
+
   useEffect(() => {
   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
