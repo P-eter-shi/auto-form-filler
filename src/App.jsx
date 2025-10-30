@@ -17,8 +17,9 @@ const XHTMLFormTransformer = () => {
 
    // 🧠 Connects to backend /api/voice-agent
   const aiVoiceAgent = async (transcript) => {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
     try {
-      const res = await fetch("http://localhost:3001/api/voice-agent", {
+      const res = await fetch(`${API_URL}/api/voice-agent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ transcript }),
