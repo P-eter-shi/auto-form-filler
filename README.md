@@ -1,6 +1,47 @@
-<<<<<<< HEAD
-# auto-form-filler
+
+# 🧠 Automated Form Filler App
 # Helps in efficient and time saving of filling office forms
+
+A modern **AI-powered web app** that transforms static `.xhtml` or `.html` documents into **interactive, editable, and voice-controllable forms**.
+
+Built for automation, accessibility, and document digitization — the app enables users to **speak** to fill forms intelligently using **OpenAI’s GPT models**.
+
+---
+
+## 🌟 Key Features
+
+✅ **Editable Form Fields**
+- Converts blank lines, `(fill)` tags, or placeholders into interactive editable regions.
+- Preserves the original structure and layout of the document.
+
+🎙 **Voice-Controlled Input**
+- Double-click on any editable field to activate **voice input**.
+- Your speech is transcribed and interpreted by an AI agent.
+- Supports natural commands:
+  - “John Smith” → fills text.
+  - “Add incorporated” → appends text.
+  - “Clear this field” → clears field content.
+  - “1,200” → recognizes numerical input.
+
+🖼 **Smart Image Uploads**
+- Right-click on any field to upload or replace an image/logo.
+
+📊 **Data Export Options**
+- Export filled forms to:
+  - Excel (`.xlsx`)
+  - Printable PDF
+  - Editable HTML document
+
+🔍 **User-Friendly Interface**
+- Responsive UI (works on desktop and mobile)
+- Zoom controls for precision editing
+- Clean and minimal layout for reports and forms
+
+---
+
+## 🧩 Architecture Overview
+
+
 =======
 # React + Vite
 
